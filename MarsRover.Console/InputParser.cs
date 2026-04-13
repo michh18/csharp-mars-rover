@@ -10,30 +10,61 @@ namespace MarsRover
 {
     public class InputParser
     {
-        public static (int, int) PlateauParser(string rawPlateau) 
+        public static (int, int) PlateauParser(string? rawPlateau) 
         {
-            string[] plateauCoords = rawPlateau.Split(" ");
-
             if (string.IsNullOrWhiteSpace(rawPlateau))
             {
                 throw new ArgumentException("Input cannot be null or empty.");
             }
 
+            string[] plateauCoords = rawPlateau.Split(" ");
+
             if (plateauCoords.Length != 2)
             {
-                throw new ArgumentException("Parsing failed: Need a string of exactly 2 numbers!");
+                throw new ArgumentException("Need a string of exactly 2 numbers!");
             }
 
-            if (!int.TryParse(plateauCoords[0], out int x) || !int.TryParse(plateauCoords[1], out int y))
+            if (!int.TryParse(plateauCoords[0], out int maxX) || !int.TryParse(plateauCoords[1], out int maxY))
             {
-                throw new FormatException("Parsing failed: Input must contain valid integers.");
+                throw new FormatException("Input must contain valid integers.");
             }
-            if (x <= 0 || y <= 0)
+
+            if (maxX <= 0 || maxY <= 0)
             {
                 throw new ArgumentOutOfRangeException("Coordinates must be positive integers.");
             }
-            return (x, y);
+            return (maxX, maxY);
         }
+
+        public static Position PositionParser(string? rawPosition) 
+        {
+            if (string.IsNullOrWhiteSpace(rawPosition))
+            {
+                throw new ArgumentException("Input cannot be null or empty.");
+            }
+
+            string[] positionParts = rawPosition.Split(" ");
+
+            if (positionParts.Length != 3) 
+            {
+                throw new ArgumentException("Input must contain exactly 3 values.");
+            }
+
+            if (!int.TryParse(positionParts[0], out int startingX) || !int.TryParse(positionParts[1], out int startingY)) 
+            { 
+                throw new FormatException("Input must contain valid integers.");
+            }
+
+            string directionInput = positionParts[2].ToUpper();
+            if (!"NESW".Contains(directionInput) || directionInput.Length != 1)
+            {
+                throw new FormatException("Invalid compass direction.");
+            }
+            CompassDirection facing = Enum.Parse<CompassDirection>(directionInput);
+
+            return new Position(startingX, startingY, facing);
+        }
+
         public static List<Instruction> InstructionParser(string rawInstruction) 
         {
             List<Instruction> processedInstructions = new List<Instruction> ();
