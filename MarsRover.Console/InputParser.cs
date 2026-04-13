@@ -12,23 +12,27 @@ namespace MarsRover
     {
         public static (int, int) PlateauParser(string rawPlateau) 
         {
-            try
-            {
-                string[] plateauCoords = rawPlateau.Split(" ");
-                if (plateauCoords.Length != 2)
-                {
-                    throw new Exception("Parsing failed: Need a string of exactly 2 numbers!");
-                }
+            string[] plateauCoords = rawPlateau.Split(" ");
 
-                int x = int.Parse(plateauCoords[0]);
-                int y = int.Parse(plateauCoords[1]);
-
-                return new(x, y);
-            }
-            catch (FormatException formatEx) 
+            if (string.IsNullOrWhiteSpace(rawPlateau))
             {
-                throw new FormatException("Parsing failed: Input string didn't contain two numbers");
+                throw new ArgumentException("Input cannot be null or empty.");
             }
+
+            if (plateauCoords.Length != 2)
+            {
+                throw new ArgumentException("Parsing failed: Need a string of exactly 2 numbers!");
+            }
+
+            if (!int.TryParse(plateauCoords[0], out int x) || !int.TryParse(plateauCoords[1], out int y))
+            {
+                throw new FormatException("Parsing failed: Input must contain valid integers.");
+            }
+            if (x <= 0 || y <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Coordinates must be positive integers.");
+            }
+            return (x, y);
         }
         public static List<Instruction> InstructionParser(string rawInstruction) 
         {

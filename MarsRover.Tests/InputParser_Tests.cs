@@ -13,33 +13,49 @@ namespace MarsRover.Tests
     {
 
         [TestCase("")]
+        [TestCase("       ")]
+        public void PlateauParser_ShouldReturnException_WhenParsedEmptyStringOrWhiteSpace(string input)
+        {
+            string expected = "Input cannot be null or empty.";
+            var ex = Assert.Throws<ArgumentException>(() => InputParser.PlateauParser(input));
+            Assert.That(ex.Message.ToString(), Does.Contain(expected));
+        }
+
         [TestCase("1")]
         [TestCase("1 2 3")]
-        public void PlateauParser_ShouldReturnException_WhenStringDoesntContainTwoIntegers(string input)
+        public void PlateauParser_ShouldReturnException_WhenStringDoesntContainExactlyTwoIntegers(string input)
         {
-            string expected = "Parsing failed: Need a string of exactly 2 numbers!";
-            var ex = Assert.Throws<Exception>(() => InputParser.PlateauParser(input));
-            Assert.That(ex.Message.ToString(), Is.EqualTo(expected));
+            string expected = "Need a string of exactly 2 numbers!";
+            var ex = Assert.Throws<ArgumentException>(() => InputParser.PlateauParser(input));
+            Assert.That(ex.Message.ToString(), Does.Contain(expected));
         }
 
         [TestCase("a 1")]
         [TestCase("a b")]
         public void PlateauParser_ShouldReturnFormatException_WhenStringContainsSomeAndNoIntegers(string input)
         {
-            string expected = "Parsing failed: Input string didn't contain two numbers";
+            string expected = "Input must contain valid integers.";
             var ex = Assert.Throws<FormatException>(() => InputParser.PlateauParser(input));
-            Assert.That(ex.Message.ToString(), Is.EqualTo(expected));
+            Assert.That(ex.Message.ToString(), Does.Contain(expected));
+        }
+
+        [TestCase("-5 -5")]
+        [TestCase("-5 0")]
+        [TestCase("0 0")]
+        public void PlateauParser_ShouldReturnArgumentOutOfRangeException_WhenParsedStringOfNegativeIntsOrBothZeros(string input)
+        {
+            string expected = "Coordinates must be positive integers.";
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => InputParser.PlateauParser(input));
+            Assert.That(ex.Message.ToString(), Does.Contain(expected));
         }
 
         [TestCase("5 5", 5, 5)]
         [TestCase("4 5", 4, 5)]
         [TestCase("3 6", 3, 6)]
-        public void PlateauParser_ShouldReturnCorrectPlateau_WhenParsedStringOfTwoNums(string input, int x, int y)
+        public void PlateauParser_ShouldReturnCorrectPlateau_WhenParsedStringOfTwoPositiveNums(string input, int x, int y)
         {
             (int, int) result = InputParser.PlateauParser(input);
-
-            Assert.That(result.Item1, Is.EqualTo(x));
-            Assert.That(result.Item2, Is.EqualTo(y));
+            Assert.That(result, Is.EqualTo((x,y)));
         }
 
         [Test]
