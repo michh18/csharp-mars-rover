@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +43,32 @@ namespace MarsRover.Tests
         }
 
         [Test]
-        public void InformationParser_ShouldReturn_When() { }
+        public void InstructionParser_ShouldReturnValidFormat_WhenParsedStringWithSomeActions()
+        {
+            string input1 = "LMRHAJREAJEM";
+            string input2 = "AAAALNM";
+            
+            var result1 = InputParser.InstructionParser(input1);
+            var result2 = InputParser.InstructionParser(input2);
+
+            Assert.That(result1, Is.EqualTo(new List<Instruction>() { Instruction.L, Instruction.M, Instruction.R, Instruction.R, Instruction.M }));
+            Assert.That(result2, Is.EqualTo(new List<Instruction>() { Instruction.L, Instruction.M }));
+        }
+
+        [Test]
+        public void InstructionParser_ShouldReturnEmptyString_WhenParsedEmptyStringOrNoActions()
+        {
+            string input1 = "";
+            string input2 = "AAABBB";
+            string input3 = "AA1BBB";
+
+            var result1 = InputParser.InstructionParser(input1);
+            var result2 = InputParser.InstructionParser(input2);
+            var result3 = InputParser.InstructionParser(input3);
+
+            Assert.That(result1, Is.EqualTo(new List<Instruction> { }));
+            Assert.That(result2, Is.EqualTo(new List<Instruction> { }));
+            Assert.That(result3, Is.EqualTo(new List<Instruction> { }));
+        }
     }
 }
