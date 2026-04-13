@@ -1,6 +1,6 @@
 ﻿public enum Instruction
 {
-    L,
-    R,
+    L = -1,
+    R = 1,
     M
 }
