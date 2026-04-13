@@ -1,6 +1,6 @@
-﻿namespace MarsRover.Console
+﻿namespace MarsRover
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
