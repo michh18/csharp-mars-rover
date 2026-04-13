@@ -17,7 +17,7 @@ namespace MarsRover
                 throw new ArgumentException("Input cannot be null or empty.");
             }
 
-            string[] plateauCoords = rawPlateau.Split(" ");
+            string[] plateauCoords = rawPlateau.Trim().Split(" ");
 
             if (plateauCoords.Length != 2)
             {
@@ -43,7 +43,7 @@ namespace MarsRover
                 throw new ArgumentException("Input cannot be null or empty.");
             }
 
-            string[] positionParts = rawPosition.Split(" ");
+            string[] positionParts = rawPosition.Trim().Split(" ");
 
             if (positionParts.Length != 3) 
             {
