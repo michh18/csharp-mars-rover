@@ -56,5 +56,29 @@ namespace MarsRover
             }
             return null;
         }
+
+        public static Position ExecuteInstructions(PlateauSize plateauSize, Position startPosition, List<Instruction> instructions) 
+        {
+            Position currentPosition = startPosition;
+
+            Console.WriteLine($"\nStarting Position: {currentPosition.ToString()}");
+
+            foreach (Instruction instruction in instructions)
+            {
+                if (instruction == Instruction.L || instruction == Instruction.R)
+                {
+                    var newFacing = Rover.Rotate(currentPosition.facing, instruction);
+                    currentPosition = new Position(currentPosition.x, currentPosition.y, newFacing);
+                }
+
+                else if (instruction == Instruction.M)
+                {
+                    var positionAfterInstruction = Rover.Move(plateauSize, currentPosition, instruction);
+                    currentPosition = new Position(positionAfterInstruction.x, positionAfterInstruction.y, positionAfterInstruction.facing);
+                }
+            }
+            Console.WriteLine($"New position after instructions is: {currentPosition.ToString()}");
+            return currentPosition;
+        }
     }
 }
