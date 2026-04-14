@@ -10,14 +10,6 @@ namespace MarsRover
 {
     public class Rover
     {
-        private CompassDirection _facing { get; set; }
-        private Instruction _rotateInfo { get; set; }
-
-        public Rover(CompassDirection facing, Instruction rotateInfo) 
-        {
-            _facing = facing;
-            _rotateInfo = rotateInfo;
-        }
         public static CompassDirection Rotate(CompassDirection facing, Instruction rotateInstruction) 
         {            
             if (rotateInstruction != Instruction.L && rotateInstruction != Instruction.R) 
@@ -38,29 +30,29 @@ namespace MarsRover
             switch (startPosition.facing) 
             {
                 case CompassDirection.N:
-                    if (startPosition.y + 1>= plateauSize.maxY) 
+                    if (startPosition.y + 1 > plateauSize.maxY) 
                     {
                         throw new ArgumentOutOfRangeException("Rover moved out of plateau.");
                     }
-                    return new Position(startPosition.x, startPosition.y + 1, CompassDirection.N);
+                    return new Position(startPosition.x, startPosition.y + 1, startPosition.facing);
                 case CompassDirection.E:
-                    if (startPosition.x + 1 >= plateauSize.maxX)
+                    if (startPosition.x + 1 > plateauSize.maxX)
                     {
                         throw new ArgumentOutOfRangeException("Rover moved out of plateau.");
                     }
-                    return new Position(startPosition.x + 1, startPosition.y, CompassDirection.E);
+                    return new Position(startPosition.x + 1, startPosition.y, startPosition.facing);
                 case CompassDirection.S:
                     if (startPosition.y - 1 < 0)
                     {
                         throw new ArgumentOutOfRangeException("Rover moved out of plateau.");
                     }
-                    return new Position(startPosition.x, startPosition.y - 1, CompassDirection.S);
+                    return new Position(startPosition.x, startPosition.y - 1, startPosition.facing);
                 case CompassDirection.W:
                     if (startPosition.x - 1 < 0)
                     {
                         throw new ArgumentOutOfRangeException("Rover moved out of plateau.");
                     }
-                    return new Position(startPosition.x - 1, startPosition.y, CompassDirection.W);
+                    return new Position(startPosition.x - 1, startPosition.y, startPosition.facing);
             }
             return null;
         }
