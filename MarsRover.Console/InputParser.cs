@@ -10,7 +10,7 @@ namespace MarsRover
 {
     public class InputParser
     {
-        public static (int, int) PlateauParser(string? rawPlateau) 
+        public static PlateauSize PlateauParser(string? rawPlateau) 
         {
             if (string.IsNullOrWhiteSpace(rawPlateau))
             {
@@ -33,7 +33,8 @@ namespace MarsRover
             {
                 throw new ArgumentOutOfRangeException("Coordinates must be positive integers.");
             }
-            return (maxX, maxY);
+
+            return new PlateauSize(maxX, maxY);
         }
 
         public static Position PositionParser(string? rawPosition) 
